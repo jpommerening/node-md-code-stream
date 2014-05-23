@@ -3,7 +3,7 @@
 var stream = require('readable-stream');
 var fs = require('fs');
 var path = require('path');
-var inherits = require('util').inherits;
+var inherits = require('inherits');
 var marked = require('marked');
 
 function slug(text) {

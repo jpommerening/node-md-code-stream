@@ -16,6 +16,8 @@
     "posttest": "node -e \"require('fs').unlinkSync('node_modules/md-code-stream')\" || true"
   },
   "dependencies": {
+    "readable-stream": "~1.1.13",
+    "inherits": "~2.0.1",
     "marked": "~0.3.2"
   },
   "devDependencies": {
