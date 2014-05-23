@@ -11,7 +11,9 @@
     "markdown_code": "./index.js"
   },
   "scripts": {
-    "test": "node index.js README.md | node"
+    "pretest": "node -e \"require('fs').symlinkSync('..', 'node_modules/md-code-stream')\"",
+    "test": "node index.js README.md | node",
+    "posttest": "node -e \"require('fs').unlinkSync('node_modules/md-code-stream')\""
   },
   "dependencies": {
     "marked": "~0.3.2"
