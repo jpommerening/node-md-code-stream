@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var stream = require('stream');
+var stream = require('readable-stream');
 var fs = require('fs');
 var path = require('path');
 var inherits = require('util').inherits;
