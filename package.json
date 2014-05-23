@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jpommerening/node-md-code.git"
+    "url": "git://github.com/jpommerening/node-md-code-stream.git"
   },
   "bin": {
     "markdown_code": "./index.js"
