@@ -1,4 +1,7 @@
+#!/usr/bin/env node
+
 var stream = require('stream');
+var fs = require('fs');
 var path = require('path');
 var inherits = require('util').inherits;
 var marked = require('marked');
@@ -27,7 +30,7 @@ function CodeBlock(code, props) {
 }
 inherits(CodeBlock, stream.Readable);
 
-CodeBlock.prototype._read = function(size) {
+CodeBlock.prototype._read = function (size) {
   var data = this._data.substr(0, size);
   this._data = this._data.substr(size);
 
@@ -51,12 +54,12 @@ function MarkdownCodeBlocks(options) {
   var num = 0;
   var self = this;
 
-  renderer.heading = function(text, level) {
+  renderer.heading = function (text, level) {
     section = section.slice(0, level-1);
     section.push(text);
     num = 0;
   };
-  renderer.code = function(code, language) {
+  renderer.code = function (code, language) {
     self._entry(section, num++, code, language);
   };
 
@@ -65,11 +68,11 @@ function MarkdownCodeBlocks(options) {
 }
 inherits(MarkdownCodeBlocks, stream.Transform);
 
-MarkdownCodeBlocks.prototype._slug = function(section, num, language) {
+MarkdownCodeBlocks.prototype._slug = function (section, num, language) {
   return section.map(slug).join('/') + (num ? '-' + num : '') + (language ? '.' + language : '');
 };
 
-MarkdownCodeBlocks.prototype._entry = function(section, num, code, language) {
+MarkdownCodeBlocks.prototype._entry = function (section, num, code, language) {
   var self = this;
   var name = this._slug(section, num, language);
   var entry = new CodeBlock(code, {
@@ -79,7 +82,7 @@ MarkdownCodeBlocks.prototype._entry = function(section, num, code, language) {
     num: num
   });
 
-  entry.on('end', function() {
+  entry.on('end', function () {
     self.emit('childEnd', entry);
     self.emit('entryEnd', entry);
   });
@@ -87,19 +90,19 @@ MarkdownCodeBlocks.prototype._entry = function(section, num, code, language) {
   this.emit('entry', entry);
 };
 
-MarkdownCodeBlocks.prototype._transform = function(chunk, encoding, callback) {
+MarkdownCodeBlocks.prototype._transform = function (chunk, encoding, callback) {
   this._data += chunk.toString(encoding === 'buffer' ? null : encoding);
   this.push(chunk, encoding);
   callback();
 };
 
-MarkdownCodeBlocks.prototype._flush = function(callback) {
+MarkdownCodeBlocks.prototype._flush = function (callback) {
   this.push(null);
 
   marked(this._data, {renderer: this._renderer}, callback);
 };
 
-MarkdownCodeBlocks.prototype.pipe = function(dest, options) {
+MarkdownCodeBlocks.prototype.pipe = function (dest, options) {
   if (typeof dest.add === 'function') {
     this.on('entry', dest.add.bind(dest));
   }
@@ -116,7 +119,7 @@ mdCodeStream.MarkdownCodeBlocks = MarkdownCodeBlocks;
 
 module.exports = mdCodeStream;
 
-if (process.argv[1] === __filename) {
+if (process.argv.length > 1) {
   function pipeCodeBlocks(stream) {
     stream.pipe(mdCodeStream()).on('entry', function (entry) {
       process.stderr.write(entry.props.path + '\n');
@@ -124,12 +127,18 @@ if (process.argv[1] === __filename) {
     });
   }
 
-  if (process.argv.length > 2) {
-    var fs = require('fs');
-    process.argv.slice(2)
-                .map(fs.createReadStream)
-                .map(pipeCodeBlocks);
-  } else {
-    pipeCodeBlocks(process.stdin);
-  }
+  fs.realpath(process.argv[1], function(err, file) {
+    if (err) {
+      return;
+    }
+    if (file === __filename) {
+      if (process.argv.length > 2) {
+        process.argv.slice(2)
+                    .map(fs.createReadStream)
+                    .map(pipeCodeBlocks);
+      } else {
+        pipeCodeBlocks(process.stdin);
+      }
+    }
+  });
 }

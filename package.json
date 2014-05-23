@@ -11,9 +11,9 @@
     "markdown_code": "./index.js"
   },
   "scripts": {
-    "pretest": "node -e \"require('fs').symlinkSync('..', 'node_modules/md-code-stream')\"",
+    "pretest": "node -e \"require('fs').symlinkSync('..', 'node_modules/md-code-stream')\" || true",
     "test": "node index.js README.md | node",
-    "posttest": "node -e \"require('fs').unlinkSync('node_modules/md-code-stream')\""
+    "posttest": "node -e \"require('fs').unlinkSync('node_modules/md-code-stream')\" || true"
   },
   "dependencies": {
     "marked": "~0.3.2"
