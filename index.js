@@ -115,3 +115,21 @@ mdCodeStream.CodeBlock = CodeBlock;
 mdCodeStream.MarkdownCodeBlocks = MarkdownCodeBlocks;
 
 module.exports = mdCodeStream;
+
+if (process.argv[1] === __filename) {
+  function pipeCodeBlocks(stream) {
+    stream.pipe(mdCodeStream()).on('entry', function (entry) {
+      process.stderr.write(entry.props.path + '\n');
+      entry.pipe(process.stdout);
+    });
+  }
+
+  if (process.argv.length > 2) {
+    var fs = require('fs');
+    process.argv.slice(2)
+                .map(fs.createReadStream)
+                .map(pipeCodeBlocks);
+  } else {
+    pipeCodeBlocks(process.stdin);
+  }
+}

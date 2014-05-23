@@ -7,8 +7,11 @@
     "type": "git",
     "url": "git://github.com/jpommerening/node-md-code.git"
   },
+  "bin": {
+    "markdown_code": "./index.js"
+  },
   "scripts": {
-    "test": "node test.js"
+    "test": "node index.js README.md | node"
   },
   "dependencies": {
     "marked": "~0.3.2"
