@@ -1,0 +1,20 @@
+{
+  "name": "md-code-stream",
+  "version": "0.0.1",
+  "description": "Collect code blocks from Markdown streams",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jpommerening/node-md-code.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "marked": "~0.3.2"
+  },
+  "devDependencies": {
+    "fstream": "~0.1.25"
+  }
+}
+
