@@ -116,7 +116,12 @@ MarkdownCodeBlocks.prototype.pipe = function (dest, options) {
 };
 
 function mdCodeStream(options) {
-  return new MarkdownCodeBlocks(options);
+  if (typeof options === 'string' || options instanceof String) {
+    return fs.createReadStream(options)
+             .pipe(new MarkdownCodeBlocks(arguments[1]));
+  } else {
+    return new MarkdownCodeBlocks(options);
+  }
 }
 
 mdCodeStream.CodeBlock = CodeBlock;
