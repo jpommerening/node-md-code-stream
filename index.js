@@ -63,6 +63,7 @@ function MarkdownCodeBlocks(options) {
     self._entry(section, num++, code, language);
   };
 
+  this.entries = [];
   this._data = '';
   this._renderer = renderer;
 }
@@ -82,12 +83,16 @@ MarkdownCodeBlocks.prototype._entry = function (section, num, code, language) {
     num: num
   });
 
+  this.entries.push(entry);
+
   entry.on('end', function () {
     self.emit('childEnd', entry);
     self.emit('entryEnd', entry);
   });
   this.emit('child', entry);
   this.emit('entry', entry);
+
+  return entry;
 };
 
 MarkdownCodeBlocks.prototype._transform = function (chunk, encoding, callback) {
