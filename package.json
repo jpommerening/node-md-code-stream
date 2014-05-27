@@ -3,6 +3,7 @@
   "version": "0.1.0-rc3",
   "description": "Collect code blocks from Markdown streams",
   "license": "MIT",
+  "keywords": [ "markdown", "md", "code", "stream" ],
   "repository": {
     "type": "git",
     "url": "git://github.com/jpommerening/node-md-code-stream.git"
