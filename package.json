@@ -1,6 +1,6 @@
 {
   "name": "md-code-stream",
-  "version": "0.1.0-rc3",
+  "version": "0.1.0",
   "description": "Collect code blocks from Markdown streams",
   "license": "MIT",
   "keywords": [ "markdown", "md", "code", "stream" ],
